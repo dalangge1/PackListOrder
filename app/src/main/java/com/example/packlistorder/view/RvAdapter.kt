@@ -1,5 +1,6 @@
 package com.example.packlistorder.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.ContextMenu
 import android.view.LayoutInflater
@@ -16,7 +17,7 @@ import com.example.packlistorder.bean.Good
  *@description
  */
 
-class RvAdapter(val context: Context) : RecyclerView.Adapter<RvAdapter.ViewHolder>() {
+class RvAdapter(val context: Context, val onClick: (good: Good)-> Unit) : RecyclerView.Adapter<RvAdapter.ViewHolder>() {
 
     private val list = mutableListOf<Good>()
 
@@ -28,7 +29,7 @@ class RvAdapter(val context: Context) : RecyclerView.Adapter<RvAdapter.ViewHolde
 
     }
 
-    fun setList (list: MutableList<Good>) {
+    fun refreshList (list: MutableList<Good>) {
         notifyItemRangeRemoved(0, this.list.size)
         this.list.clear()
         this.list.addAll(list)
@@ -42,10 +43,12 @@ class RvAdapter(val context: Context) : RecyclerView.Adapter<RvAdapter.ViewHolde
         return ViewHolder(v)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tv_box_id.setText(list[position].packageId)
-        holder.tv_time.setText(list[position].time)
-        holder.tv_person.setText(list[position].controller)
-        holder.tv_id.setText(list[position].id)
+        holder.tv_box_id.text = "箱号：" + list[position].packageId
+        holder.tv_time.text = "时间：" + list[position].time
+        holder.tv_person.text = list[position].controller
+        holder.tv_id.text = list[position].id
+        holder.itemView.setOnClickListener { onClick.invoke(list[position]) }
     }
 }

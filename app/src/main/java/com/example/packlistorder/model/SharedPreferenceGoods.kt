@@ -66,9 +66,11 @@ object SharedPreferenceGoods {
         } else {
             gson.fromJson(origin, object : TypeToken<MutableList<Good>>() {}.type)
         }
-        list.forEach {
-            if (it.id == id) {
-                list.remove(it)
+        val iterator = list.iterator()
+        while (iterator.hasNext()){
+            if (iterator.next().id == id) {
+                iterator.remove()
+                break
             }
         }
         editor?.putString("GoodsList",gson.toJson(list))

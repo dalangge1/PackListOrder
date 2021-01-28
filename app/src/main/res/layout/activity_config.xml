@@ -6,6 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".view.ActivityConfig">
 
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="起始箱号："
+        app:layout_constraintBottom_toBottomOf="@+id/ed_box_id"
+        app:layout_constraintEnd_toStartOf="@+id/ed_id"
+        app:layout_constraintTop_toTopOf="@+id/ed_box_id" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="本次录入产品数量："
+        app:layout_constraintBottom_toBottomOf="@+id/ed_good_num"
+        app:layout_constraintEnd_toStartOf="@+id/ed_id"
+        app:layout_constraintTop_toTopOf="@+id/ed_good_num" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="每箱个数："
+        app:layout_constraintBottom_toBottomOf="@+id/ed_box_num"
+        app:layout_constraintEnd_toStartOf="@+id/ed_id"
+        app:layout_constraintTop_toTopOf="@+id/ed_box_num" />
+
     <EditText
         android:id="@+id/ed_good_num"
         android:layout_width="wrap_content"
@@ -15,7 +45,7 @@
         android:hint="要装产品数量"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/ed_box_num" />
 
     <EditText
@@ -27,8 +57,8 @@
         android:hint="每箱产品个数"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ed_box_id" />
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/ed_id" />
 
     <TextView
         android:id="@+id/tv_controller"
@@ -52,6 +82,18 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
+        android:id="@+id/ed_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="起始产品号"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_controller" />
+
+    <EditText
         android:id="@+id/ed_box_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,6 +102,23 @@
         android:hint="起始箱号"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_controller" />
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/ed_good_num" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        app:layout_constraintGuide_percent="0.4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="起始产品号(不可小写)："
+        app:layout_constraintBottom_toBottomOf="@+id/ed_id"
+        app:layout_constraintEnd_toStartOf="@+id/ed_id"
+        app:layout_constraintTop_toTopOf="@+id/ed_id" />
 </androidx.constraintlayout.widget.ConstraintLayout>

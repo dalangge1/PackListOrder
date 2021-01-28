@@ -1,7 +1,6 @@
 package com.example.packlistorder.view
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -22,12 +21,9 @@ class ActivityPacking : AppCompatActivity() {
     val listNot = mutableListOf<Good>()
     val listDone = mutableListOf<Good>()
     lateinit var app: MainApplication
-    val adapterNot = RvAdapter(this).apply {
-        setList(listNot)
-    }
-    val adapterDone = RvAdapter(this).apply {
-        setList(listDone)
-    }
+    val adapterNot = RvAdapter(this){}
+
+    val adapterDone = RvAdapter(this){}
 
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,10 +39,10 @@ class ActivityPacking : AppCompatActivity() {
 
         rv_not.adapter = adapterNot
         rv_not.layoutManager = LinearLayoutManager(this)
+        adapterNot.refreshList(listNot)
 
         rv_done.adapter = adapterDone
         rv_done.layoutManager = LinearLayoutManager(this)
-        adapterNot.notifyDataSetChanged()
 
 
         bt_pack.setOnClickListener {
@@ -56,13 +52,23 @@ class ActivityPacking : AppCompatActivity() {
                 if (iterator.next().id == id){
                     iterator.remove()
                     listDone.add(Good("", id, app.controllerName, app.currentBoxNum.toString(), SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())))
-                    adapterNot.notifyDataSetChanged()
-                    adapterDone.notifyDataSetChanged()
+                    adapterNot.refreshList(listNot)
+                    adapterDone.refreshList(listDone.asReversed())
+
+                    app.hasPacked++
+                    if(app.hasPacked >= app.everyBoxGoodsNum){
+                        app.hasPacked = 0
+                        app.currentBoxNum ++
+                    }
+
+
+
                     if (listNot.size == 0) {
                         Toast.makeText(this, "已完成录入！", Toast.LENGTH_SHORT).show()
                         listDone.forEach {
                             SharedPreferenceGoods.addGood(it)
                         }
+                        app.isFinished = true
                         app.save()
                         finish()
                     }

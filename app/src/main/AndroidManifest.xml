@@ -13,7 +13,7 @@
         <activity android:name=".view.ActivityPacking"></activity>
         <activity android:name=".view.ActivityConfig" />
         <activity android:name=".view.ActivityMainView" />
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.ActivityLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
