@@ -1,5 +1,6 @@
 package com.example.packlistorder.utils;
 
+
 import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.util.Hashtable;
 
@@ -37,14 +39,14 @@ public class ZXingUtils {
             if (url == null || "".equals(url) || url.length() < 1) {
                 return null;
             }
-            Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
+            Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
             //容错率
             //L 7,M 15,Q 25,H 30.
-            hints.put(EncodeHintType.ERROR_CORRECTION, "H");
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
 
             //边距 0最小 1   2最大
-            hints.put(EncodeHintType.MARGIN, "1");
+            hints.put(EncodeHintType.MARGIN, 1);
             // 图像数据转换，使用了矩阵转换
             BitMatrix bitMatrix = new QRCodeWriter().encode(url,
                     BarcodeFormat.QR_CODE, width, height, hints);

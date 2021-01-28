@@ -22,6 +22,7 @@ import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.activity_config.*
 import kotlinx.android.synthetic.main.activity_packing.*
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -144,7 +145,13 @@ class ActivityPacking : AppCompatActivity() {
                         }
                         app.isFinished = true
                         app.save()
-                        
+                        val sb = StringBuilder()
+                        listDone.forEach {
+                            sb.append(it.toString() + "\n")
+                        }
+                        startActivity(Intent(this, ActivityZxing::class.java).apply {
+                            putExtra("content", sb.toString())
+                        })
                         finish()
                     }
                     return
