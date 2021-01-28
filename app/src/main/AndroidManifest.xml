@@ -3,13 +3,17 @@
     package="com.example.packlistorder">
 
     <application
+        android:name=".model.MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PackListOrder">
-        <activity android:name=".MainActivity">
+        <activity android:name=".view.ActivityPacking"></activity>
+        <activity android:name=".view.ActivityConfig" />
+        <activity android:name=".view.ActivityMainView" />
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
