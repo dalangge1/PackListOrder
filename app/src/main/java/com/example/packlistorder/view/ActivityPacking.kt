@@ -1,20 +1,30 @@
 package com.example.packlistorder.view
 
+import android.Manifest
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.packlistorder.R
 import com.example.packlistorder.bean.Good
 import com.example.packlistorder.model.MainApplication
 import com.example.packlistorder.model.SharedPreferenceGoods
 import com.example.packlistorder.utils.IdAdder
+import com.google.zxing.integration.android.IntentIntegrator
+import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.activity_config.*
 import kotlinx.android.synthetic.main.activity_packing.*
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class ActivityPacking : AppCompatActivity() {
 
@@ -46,12 +56,76 @@ class ActivityPacking : AppCompatActivity() {
 
 
         bt_pack.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.CAMERA),
+                    1
+                )
+            } else {
+                clickScan()
+            }
+
+        }
+
+    }
+
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("未完成本次录入时退出，将不会记录已录入的产品到数据库！")
+            .setNegativeButton("取消", null)
+        builder.setPositiveButton(
+            "确定退出"
+        ) { _, _ ->
+            super.onBackPressed()
+        }.show()
+
+
+
+    }
+
+    //    扫描按钮点击监听事件
+    private fun clickScan() {
+        //扫描操作
+        val integrator = IntentIntegrator(this)
+        integrator.initiateScan()
+    }
+
+
+    @SuppressLint("SimpleDateFormat")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //    跳转扫描页面返回扫描数据
+        val scanResult: IntentResult =
+            IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        //        判断返回值是否为空
+        if (scanResult.contents != null) {
+            //返回条形码数据
+            val result: String = scanResult.contents
+            Log.d("code", result)
+            Toast.makeText(this, "扫码成功：$result", Toast.LENGTH_LONG).show()
+
+            et_id.setText(result)
             val id = et_id.text.toString()
             val iterator = listNot.iterator()
             while(iterator.hasNext()){
                 if (iterator.next().id == id){
                     iterator.remove()
-                    listDone.add(Good("", id, app.controllerName, app.currentBoxNum.toString(), SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())))
+                    listDone.add(
+                        Good(
+                            "",
+                            id,
+                            app.controllerName,
+                            app.currentBoxNum.toString(),
+                            SimpleDateFormat(
+                                "yyyy-MM-dd HH:mm:ss"
+                            ).format(Date())
+                        )
+                    )
                     adapterNot.refreshList(listNot)
                     adapterDone.refreshList(listDone.asReversed())
 
@@ -70,26 +144,15 @@ class ActivityPacking : AppCompatActivity() {
                         }
                         app.isFinished = true
                         app.save()
+                        
                         finish()
                     }
-                    return@setOnClickListener
+                    return
                 }
             }
             Toast.makeText(this, "产品标号不在范围中！", Toast.LENGTH_SHORT).show()
+
         }
-
     }
 
-    override fun onBackPressed() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("未完成本次录入时退出，将不会记录已录入的产品到数据库！")
-            .setNegativeButton("取消", null)
-        builder.setPositiveButton("确定退出"
-        ) { _, _ ->
-            super.onBackPressed()
-        }.show()
-
-
-
-    }
 }

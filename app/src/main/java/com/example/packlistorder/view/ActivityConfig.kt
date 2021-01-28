@@ -50,6 +50,7 @@ class ActivityConfig : AppCompatActivity() {
             app.everyBoxGoodsNum = ed_box_num.text.toString().toInt()
             app.total = ed_good_num.text.toString().toInt()
             app.hasPacked = 0
+            app.currentBoxNum = ed_box_id.text.toString().toInt()
             app.isFinished = false
             app.save()
             startActivity(Intent(this, ActivityPacking::class.java))
